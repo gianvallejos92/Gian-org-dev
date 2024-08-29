@@ -2,17 +2,13 @@ public with sharing class OpportunityHandler {
     private static String CLOSED_WON_STATUS = 'Closed Won';
     private static String CLOSED_LOST_STATUS = 'Closed Lost';
 
-    public static void crearNegociosDesdeOportunidadesCerradas (List <Opportunity> newOpps, Map <Id, Opportunity> oldOppsMap) {        
-
+    public static void crearNegociosDesdeOportunidadesCerradas (List <Opportunity> newOpps, Map <Id, Opportunity> oldOppsMap) {       
         Set <Opportunity> closedOpps = obtenerOportunidadesCerradas(newOpps, oldOppsMap);
-
         crearNegociosDesdeOportunidades(closedOpps); 
-
     }
 
     private static Set <Opportunity> obtenerOportunidadesCerradas(List <Opportunity> newOpps, Map <Id, Opportunity> oldOppsMap) {
         Set <Opportunity> closedOpps = new Set <Opportunity> ();
-
         for (Opportunity curOpp : newOpps) {
             if (oldOppsMap.containsKey(curOpp.Id)) {
                 String oldOppStage = oldOppsMap.get(curOpp.Id).StageName;
@@ -24,7 +20,6 @@ public with sharing class OpportunityHandler {
                 }
             }
         }
-
         return closedOpps;
     }
 
@@ -34,7 +29,6 @@ public with sharing class OpportunityHandler {
 
     private static void crearNegociosDesdeOportunidades (Set <Opportunity> closedOpps) {
         List <Negocio__c> newNegocios = new List <Negocio__c> ();
-
         for (Opportunity curOpp : closedOpps) {
             Negocio__c curNegocio = new Negocio__c();
             curNegocio.Account__c = curOpp.AccountId;
@@ -43,7 +37,6 @@ public with sharing class OpportunityHandler {
             curNegocio.Monto_Total_Perdido__c = curOpp.Account.Monto_Total_Oportunidades_Perdidas__c;
             newNegocios.add(curNegocio);
         }
-
         insertarListasDeNegocios(newNegocios);
     }
 
