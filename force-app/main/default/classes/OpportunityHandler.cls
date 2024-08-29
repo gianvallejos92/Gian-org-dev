@@ -1,12 +1,31 @@
+/**
+ * Class OpportunityHandler
+ * @description Trigger on Opportunity
+ * @author: Gian Vallejos
+ * @date: 29-08-2024
+ * v.1. - Gian Vallejos
+ * 
+ */
 public with sharing class OpportunityHandler {
     private static String CLOSED_WON_STATUS = 'Closed Won';
     private static String CLOSED_LOST_STATUS = 'Closed Lost';
 
+    /**
+     * Método principal, llamado desde el TriggerHandler de Oportunidad para crear un negocio al cerrar oportunidades
+     * @param newOpss: Oportunidades con valores actuales
+     * @param oldOppsMap: Valores de la Oportunidad antes de actualizar
+     */
     public static void crearNegociosDesdeOportunidadesCerradas (List <Opportunity> newOpps, Map <Id, Opportunity> oldOppsMap) {       
         Set <Opportunity> closedOpps = obtenerOportunidadesCerradas(newOpps, oldOppsMap);
         crearNegociosDesdeOportunidades(closedOpps); 
     }
 
+    /**
+     * Obtiene las oportunidades que han sido cerradas en la transacción del trigger Opportunity
+     * @param newOpss: Oportunidades con valores actuales
+     * @param oldOppsMap: Valores de la Oportunidad antes de actualizar
+     * @return Conjunto de las oportunidades que han sido modificadas al estado "Closed Won" o "Closed Lost"
+     */
     private static Set <Opportunity> obtenerOportunidadesCerradas(List <Opportunity> newOpps, Map <Id, Opportunity> oldOppsMap) {
         Set <Opportunity> closedOpps = new Set <Opportunity> ();
         for (Opportunity curOpp : newOpps) {
