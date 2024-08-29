@@ -38,3 +38,19 @@ $RECYCLE.BIN/
 
 # Local environment variables
 .env
+
+#Clean Code
+.husky
+.vscode
+config
+scripts
+force-app/main/default/applications
+force-app/main/default/aura
+force-app/main/default/contentassets
+force-app/main/default/flexipages
+force-app/main/default/layouts
+force-app/main/default/lwc
+force-app/main/default/objects
+force-app/main/default/permissionsets
+force-app/main/default/staticresources
+force-app/main/default/tabs
