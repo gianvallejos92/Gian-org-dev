@@ -1,5 +1,6 @@
 public with sharing class OpportunityHandler {
     public static void iniciar (List <Opportunity> nuevo, Map <Id, Opportunity> viejo) {
+        //New branch
         System.debug('Esto es un inicio');
         Set <Opportunity> validas = new Set <Opportunity> ();
         for (Opportunity opp : nuevo) {
