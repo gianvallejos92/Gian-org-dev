@@ -1,23 +1,22 @@
 public with sharing class OpportunityHandler {
-    public static void iniciar (List <Opportunity> nuevo, Map <Id, Opportunity> viejo) {
-        System.debug('Esto es un inicio');
-        Set <Opportunity> validas = new Set <Opportunity> ();
-        for (Opportunity opp : nuevo) {
-            if (viejo.containsKey(opp.Id)) {
-                String estado2 = viejo.get(opp.Id).StageName;
-                if (opp.StageName != estado2 && (opp.StageName == 'Closed Won' || opp.StageName == 'Closed Lost')) { validas.add(opp); }
+    public static void crearNegociosDesdeOportunidadesCerradas (List <Opportunity> newOpps, Map <Id, Opportunity> oldOppsMap) {
+        Set <Opportunity> closedOpps = new Set <Opportunity> ();
+        for (Opportunity curOpp : newOpps) {
+            if (oldOppsMap.containsKey(curOpp.Id)) {
+                String oldOppStage = oldOppsMap.get(curOpp.Id).StageName;
+                if (curOpp.StageName != oldOppStage && (curOpp.StageName == 'Closed Won' || curOpp.StageName == 'Closed Lost')) { closedOpps.add(curOpp); }
             }
         }
-        List <Negocio__c> sets = new List <Negocio__c> ();
-        for (Opportunity opp2 : validas) {
-            Negocio__c val = new Negocio__c();
-            val.Name = opp2.Name;
-            val.Account__c = opp2.AccountId;
-            val.Tipo_de_Negocio__c = (opp2.StageName == 'Closed Won') ? 'Ganada' : 'Perdida';
-            val.Monto_Total_Ganado__c = opp2.Account.Monto_Total_Oportunidades_Ganadas__c;
-            val.Monto_Total_Perdido__c = opp2.Account.Monto_Total_Oportunidades_Perdidas__c;
-            sets.add(val);
+        List <Negocio__c> newNegocios = new List <Negocio__c> ();
+        for (Opportunity curOpp : closedOpps) {
+            Negocio__c curNegocio = new Negocio__c();
+            curNegocio.Name = curOpp.Name;
+            curNegocio.Account__c = curOpp.AccountId;
+            curNegocio.Tipo_de_Negocio__c = (curOpp.StageName == 'Closed Won') ? 'Ganada' : 'Perdida';
+            curNegocio.Monto_Total_Ganado__c = curOpp.Account.Monto_Total_Oportunidades_Ganadas__c;
+            curNegocio.Monto_Total_Perdido__c = curOpp.Account.Monto_Total_Oportunidades_Perdidas__c;
+            newNegocios.add(curNegocio);
         }
-        insert sets;        
+        insert newNegocios;        
     }
 }
