@@ -35,4 +35,8 @@ public with sharing class OpportunityHandler {
         }
         return newNegocios;
     }
+
+    private static boolean obtenerEstadoDeNegocioDesdeOportunidad(String StageName) {
+        return (StageName == 'Closed Won') ? 'Ganada' : 'Perdida';
+    }
 }
